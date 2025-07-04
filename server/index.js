@@ -11,8 +11,9 @@ app.use(cors());
 app.use(express.json());
 
 app.use('/api/auth', require('./routes/auth'));
+app.use('/api/manager', require('./routes/manager'));
+app.use('/api/associate', require('./routes/associate'));
 
-// TODO: Add task and timesheet routes tomorrow
 
 app.listen(process.env.PORT, () => {
   console.log(`Server running on port ${process.env.PORT}`);

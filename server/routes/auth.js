@@ -2,6 +2,7 @@ const express = require('express');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
+const { protect, isManager } = require('../middleware/authMiddleware');
 
 const router = express.Router();
 
@@ -22,6 +23,12 @@ router.post('/login', async (req, res) => {
 
   const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "2d" });
   res.json({ token, user });
+});
+
+// Get all users (only manager can access)
+router.get('/users', protect, isManager, async (req, res) => {
+  const users = await User.find().select('-password');
+  res.json(users);
 });
 
 module.exports = router;
